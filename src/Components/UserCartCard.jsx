@@ -12,8 +12,8 @@ const UserCartCard = () => {
     const cartItems = [];
     const [cartData, setCartData] = React.useState([]);
     const [showAlert, setShowAlert] = React.useState(false);
-
-
+    const [showDialog, setShowDialog] = React.useState(false);
+    const [currentItem, setCurrentItem] = React.useState(null);
 
     useEffect(() => {
         async function fetchCartItems() {
@@ -67,10 +67,11 @@ const UserCartCard = () => {
         fetchCartItems();
     }, [email, navigate, location]);
 
-    const handleRemoveCartItem = (productId) => async (e) => {
-        e.preventDefault();
+    const handleRemoveCartItem = async (e) => {
+        // e.preventDefault();
+        console.log("currentItem", currentItem);
         try {
-            const formdata = { user_email: email, Product_id: productId };
+            const formdata = { user_email: email, Product_id: currentItem.id };
             console.log("formdata", formdata);
             const response = await fetch('http://127.0.0.1:8000/Mizanur/remove_from_cart/', {
                 method: "POST",
@@ -83,7 +84,8 @@ const UserCartCard = () => {
                 // Update cartData state to remove the item
                 //alert("Item removed from cart");
                 setShowAlert(true);
-                setCartData((prevCartData) => prevCartData.filter(item => item.id !== productId));
+
+                setCartData((prevCartData) => prevCartData.filter(item => item.id !== currentItem.id));
 
             }
         } catch (error) {
@@ -93,12 +95,30 @@ const UserCartCard = () => {
 
     return (
         <>
+            {showDialog && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h2 className="modal-title">Are you sure you want to remove this item from the cart?</h2>
+
+                        <div className="modal-buttons">
+                            <button className="btn btn-cancel" onClick={() => setShowDialog(false)}>
+                                Cancel
+                            </button>
+                            <button className="btn btn-confirm" onClick={() => { setShowDialog(false); handleRemoveCartItem(); }}>
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {showAlert && (
-        <div className="alert-success">
-          <span className="alert-text"><strong>Item removed successfully!</strong></span>
-          <button className="alert-close" onClick={() => setShowAlert(false)}>✕</button>
-        </div>
-      )}
+                <div className=" modal-overlay">
+                    <div className="modal">
+                        <span className="alert-text"><strong>Item removed successfully!</strong></span>
+                        <button className="alert-close" onClick={() => setShowAlert(false)}>✕</button> </div>
+
+                </div>
+            )}
             <div className="cart-page-2">
                 <div className="cart-left-2">
                     {cartData.map((item) => (
@@ -113,8 +133,11 @@ const UserCartCard = () => {
                                 <div className="variant-2">₹ {item.price}</div>
                                 <div className="stock-status-2">{item.status}</div>
                                 <div className="cart-buttons-2">
-                                    <button className="save-btn-2">BUY NOW</button>
-                                    <button className="remove-btn-2" onClick={handleRemoveCartItem(item.id)}>REMOVE</button>
+                                    <button className="save-btn-2" onClick={(e) => {
+                                        e.preventDefault()
+                                        navigate('/buy-product')
+                                    }}>BUY NOW</button>
+                                    <button className="remove-btn-2" onClick={() => { setShowDialog(true); setCurrentItem(item); }}>REMOVE</button>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +173,7 @@ const UserCartCard = () => {
                     <button className="place-order-btn-2">PLACE ORDER</button>
                 </div>
             </div>
-            
+
         </>
     )
 }

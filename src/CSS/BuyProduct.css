@@ -1,0 +1,208 @@
+/* Layout */
+.checkoutContainer_4 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f8f9fb;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+@media (min-width: 992px) {
+  .checkoutContainer_4 {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Left Section */
+.leftSection_4 {
+  flex: 2;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Login Section */
+.loginSection_4 {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+}
+
+.loginHeader_4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loginHeader_4 h2 {
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.changeBtn_4 {
+  background: none;
+  border: none;
+  color: #007aff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.loginPhone_4 {
+  color: #007aff;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+/* Address Section */
+.addressSection_4 h2 {
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.addressCard_4 {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: 0.3s;
+  background: #fff;
+  cursor: pointer;
+}
+
+.addressCard_4:hover {
+  border-color: #007aff;
+}
+
+.selected_4 {
+  border-color: #007aff;
+  background-color: #f0f7ff;
+}
+
+.addressHeader_4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.addressName_4 {
+  font-weight: 600;
+  color: #222;
+}
+
+.addressPhone_4 {
+  font-size: 13px;
+  color: #555;
+  margin-left: 6px;
+}
+
+.addressText_4 {
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.editBtn_4 {
+  background: none;
+  border: none;
+  color: #007aff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.deliverBtn_4 {
+  margin-top: 10px;
+  background-color: #fb641b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.deliverBtn_4:hover {
+  background-color: #e25a14;
+}
+
+.addNewAddress_4 {
+  color: #007aff;
+  font-weight: 600;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+/* Right Section */
+.rightSection_4 {
+  flex: 1;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+.rightSection_4 h2 {
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.priceRow_4 {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #444;
+}
+
+.priceTotal_4 {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.savingsText_4 {
+  color: #2e7d32;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.safetyNote_4 {
+  font-size: 13px;
+  color: #444;
+  margin-top: 15px;
+}
+
+.termsText_4 {
+  font-size: 12px;
+  color: #555;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+.link_4 {
+  color: #007aff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.signup-container_4{
+    padding-top: 10px;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .rightSection_4 {
+    width: 100%;
+  }
+}

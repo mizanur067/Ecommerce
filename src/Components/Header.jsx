@@ -76,7 +76,9 @@ const Header = () => {
                         <img
                             src="https://pngimg.com/uploads/amazon/amazon_PNG.png"
                             alt="MR Store"
-                            className="logo"
+                            className="logo" onClick={() => {
+                                console.log("first")
+                                navigate('/')}}
                         />
 
                     </div>

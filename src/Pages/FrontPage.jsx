@@ -10,6 +10,7 @@ import UploadProductPage from './UploadProductPage';
 import HomeCategoryPage from './HomeCategoryPage';
 import ProductDetails from './ProductDetails';
 import UserCart from './UserCart';
+import BuyProduct from './BuyProduct';
 const FrontPage = () => {
     return (
         <div>
@@ -26,6 +27,7 @@ const FrontPage = () => {
                     <Route path="/home-category" element={<HomeCategoryPage />} />
                     <Route path="/product-details" element={<ProductDetails />} />
                     <Route path="/user-cart" element={<UserCart />} />
+                    <Route path="/buy-product" element={<BuyProduct />} />
                     {/* Add more routes as needed */}
 
 
