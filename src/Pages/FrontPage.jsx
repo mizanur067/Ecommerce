@@ -11,6 +11,7 @@ import HomeCategoryPage from './HomeCategoryPage';
 import ProductDetails from './ProductDetails';
 import UserCart from './UserCart';
 import BuyProduct from './BuyProduct';
+import UserProfile from './UserProfile';
 const FrontPage = () => {
     return (
         <div>
@@ -28,6 +29,7 @@ const FrontPage = () => {
                     <Route path="/product-details" element={<ProductDetails />} />
                     <Route path="/user-cart" element={<UserCart />} />
                     <Route path="/buy-product" element={<BuyProduct />} />
+                    <Route path="/user-profile" element={<UserProfile />} />
                     {/* Add more routes as needed */}
 
 
