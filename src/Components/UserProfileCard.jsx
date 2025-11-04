@@ -10,17 +10,20 @@ const UserProfileCard = () => {
     const [showSidebar, setShowSidebar] = useState(false);
     const [edit_personal_data, setEditPersonalData] = useState(false);
     const [showUserDetailUpdated, setShowUserDetailUpdated] = useState(false);
-    const [editEmail,setEditEmail]=useState(false);
+    const [editEmail, setEditEmail] = useState(false);
     const [OtpBox, setOtpBox] = useState(false);
     const [showUserEmailUpdated, setShowUserEmailUpdated] = useState(false);
+    const [edit_user_phone_number, set_edit_user_phone_number] = useState(false)
+    const [show_user_phone_number_updated, set_show_user_phone_number_updated] = useState(false)
     // for personal data update
     const first_name_ref = useRef();
     const last_name_ref = useRef();
     const email_ref = useRef();
     const otp_ref = useRef();
+    const phone_number_ref = useRef();
 
     const [gender_data, setGenderData] = useState('');
-    
+
     if (!email) {
         navigate("/user-login", { state: { from: location }, replace: true });
     }
@@ -83,7 +86,12 @@ const UserProfileCard = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setShowUserDetailUpdated(true);
+                if (data.status === "success") {
+                    setEditPersonalData(false);
+                    setShowUserDetailUpdated(true);
+                }
+
+
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -91,7 +99,7 @@ const UserProfileCard = () => {
     };
     const handle_name_Send_otp = (e) => {
         e.preventDefault();
-        const formData={new_email:email_ref.current?.value};
+        const formData = { new_email: email_ref.current?.value };
         fetch("http://127.0.0.1:8000/Mizanur/send_email_update_otp/", {
             method: "POST",
             headers: {
@@ -102,18 +110,22 @@ const UserProfileCard = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setEditEmail(false);
-                setOtpBox(true);
+                if (data.status === "success") {
+                    setEditEmail(false);
+                    setOtpBox(true);
+                }
+
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
     }
-     const handle_Update_email = (e) => {
+    const handle_Update_email = (e) => {
         e.preventDefault();
-        const formData={ email:email,
-            new_email:email_ref.current?.value,
-            otp:otp_ref.current?.value
+        const formData = {
+            email: email,
+            new_email: email_ref.current?.value,
+            otp: otp_ref.current?.value
         };
         fetch("http://127.0.0.1:8000/Mizanur/update_user_email/", {
             method: "POST",
@@ -125,10 +137,38 @@ const UserProfileCard = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setShowUserEmailUpdated(true);
-                setOtpBox(false);
-                localStorage.removeItem('email');
-                
+                if (data.status === "success") {
+                    setShowUserEmailUpdated(true);
+                    setOtpBox(false);
+                    localStorage.removeItem('email');
+                }
+
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+    const handle_user_phone_number_submit = (e) => {
+        e.preventDefault();
+        const formData = {
+            email: email,
+            phone_number: phone_number_ref.current?.value
+        };
+        fetch("http://127.0.0.1:8000/Mizanur/update_user_phone/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                if (data.status === "success") {
+                    set_show_user_phone_number_updated(true);
+                    set_edit_user_phone_number(false);
+                }
+
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -145,11 +185,19 @@ const UserProfileCard = () => {
                 </div>
             )}
             {showUserEmailUpdated && (<div className=" modal-overlay">
-                    <div className="modal">
-                        <span className="alert-text"><strong>Your Email Updated successfully!</strong></span>
-                        <button className="alert-close" onClick={() => setShowUserEmailUpdated(false)}>✕</button> </div>
+                <div className="modal">
+                    <span className="alert-text"><strong>Your Email Updated successfully!</strong></span>
+                    <button className="alert-close" onClick={() => setShowUserEmailUpdated(false)}>✕</button> </div>
 
-                </div>)}
+            </div>)}
+            {
+                show_user_phone_number_updated && <div className=" modal-overlay">
+                    <div className="modal">
+                        <span className="alert-text"><strong>Your Phone Number Updated successfully!</strong></span>
+                        <button className="alert-close" onClick={() => set_show_user_phone_number_updated(false)}>✕</button> </div>
+
+                </div>
+            }
             <div className="container_user_profile">
 
                 {/* Header only visible in mobile */}
@@ -183,6 +231,7 @@ const UserProfileCard = () => {
                         <h4>ACCOUNT SETTINGS</h4>
                         <ul>
                             <li className="active_user_profile">Profile Information</li>
+                            <li>Update Password</li>
                             <li>Manage Addresses</li>
                             <li>PAN Card Information</li>
                         </ul>
@@ -214,50 +263,59 @@ const UserProfileCard = () => {
                     <div className="gender_section_user_profile">
                         <label>Your Gender</label>
                         <div className="radio_group_user_profile">
-                            <label><input type="radio" name='Gender' checked={userData.Gender === "Male"} disabled={!edit_personal_data} onChange={() =>
-                                {setGenderData("Male")
-                                    userData.Gender="Male"
-                                }
+                            <label><input type="radio" name='Gender' checked={userData.Gender === "Male"} disabled={!edit_personal_data} onChange={() => {
+                                setGenderData("Male")
+                                userData.Gender = "Male"
+                            }
                             } /> Male</label>
-                            <label><input type="radio" name='Gender' checked={userData.Gender === "Female"} disabled={!edit_personal_data} onChange={() =>
-                                {setGenderData("Female")
-                                    userData.Gender="Female"
-                                }
+                            <label><input type="radio" name='Gender' checked={userData.Gender === "Female"} disabled={!edit_personal_data} onChange={() => {
+                                setGenderData("Female")
+                                userData.Gender = "Female"
+                            }
                             } /> Female</label>
                         </div>
-                        {edit_personal_data && 
-                         <div>
-                            <button className="save_button_user_profile"
-                         onClick={handle_name_gender_submit} >Save</button>
-                         <button className="save_button_user_profile"
-                         onClick={() => setEditPersonalData(false)} >Cancel</button>
-                         </div>
-                         }
+                        {edit_personal_data &&
+                            <div>
+                                <button className="save_button_user_profile"
+                                    onClick={handle_name_gender_submit} >Save</button>
+                                <button className="save_button_user_profile"
+                                    onClick={() => setEditPersonalData(false)} >Cancel</button>
+                            </div>
+                        }
                     </div>
 
                     <h3 className="section_title_user_profile">
-                        Email Address <span className="edit_link_user_profile" onClick={()=>setEditEmail(true)}>Edit</span>
+                        Email Address <span className="edit_link_user_profile" onClick={() => setEditEmail(true)}>Edit</span>
                     </h3>
                     <input type="email" ref={email_ref} defaultValue={editEmail ? "" : userData.email} disabled={!editEmail} className="input_block_user_profile" placeholder='Enter Your Email' />
-                    {editEmail && 
-                         <div>
+                    {editEmail &&
+                        <div>
                             <button className="save_button_user_profile"
-                         onClick={handle_name_Send_otp} >Send OTP</button>
-                         <button className="save_button_user_profile"
-                         onClick={() => setEditEmail(false)} >Cancel</button>
-                         </div>
-                         }
-                         {OtpBox &&
-                         <div >
-                            <input type="text" className="input_block_user_profile" placeholder='Enter OTP'  ref={otp_ref}/>
+                                onClick={handle_name_Send_otp} >Send OTP</button>
+                            <button className="save_button_user_profile"
+                                onClick={() => setEditEmail(false)} >Cancel</button>
+                        </div>
+                    }
+                    {OtpBox &&
+                        <div >
+                            <input type="text" className="input_block_user_profile" placeholder='Enter OTP' ref={otp_ref} />
                             <button className="save_button_user_profile" onClick={handle_Update_email}>Verify</button>
-                         </div>
-                         }
+                        </div>
+                    }
 
                     <h3 className="section_title_user_profile">
-                        Mobile Number <span className="edit_link_user_profile">Edit</span>
+                        Mobile Number <span className="edit_link_user_profile" onClick={() => set_edit_user_phone_number(true)}>Edit</span>
                     </h3>
-                    <input type="tel" defaultValue={edit_personal_data ? "" : userData.phone_number} disabled={!edit_personal_data} className="input_block_user_profile" placeholder='Enter Your Phone Number' />
+
+                    <input type="tel" ref={phone_number_ref} defaultValue={edit_user_phone_number ? "" : userData.phone_number} disabled={!edit_user_phone_number} className="input_block_user_profile" placeholder='Enter Your Phone Number' />
+                    {edit_user_phone_number &&
+                        <div>
+                            <button className="save_button_user_profile"
+                                onClick={handle_user_phone_number_submit} >Save</button>
+                            <button className="save_button_user_profile"
+                                onClick={() => set_edit_user_phone_number(false)} >Cancel</button>
+                        </div>
+                    }
                 </main>
             </div>
         </>
