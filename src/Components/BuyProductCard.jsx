@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { use } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react';
 import '../CSS/BuyProduct.css'
-
+import { useRecoilState } from 'recoil';
+import SelectedAddressAtom from '../Recoils/SelectedAddressAtom';
 const BuyProductCard = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -17,15 +18,78 @@ const BuyProductCard = () => {
     const [showNewAddressForm, setShowNewAddressForm] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [showAlertData, setShowAlertData] = useState('');
+    const [FetchedUserAddress, setFetchedUserAddress] = useState([]);
+    const [loginPhone, setLoginPhone] = useState('');
+    const [selectedAddress, setSelectedAddress] = useRecoilState(SelectedAddressAtom);
 
-    if (!email) {
-        navigate("/user-login", { state: { from: location }, replace: true });
-        return;
-    }
+
 
     // const [selectedAddress_4, setSelectedAddress_4] = useState(true);
 
 
+
+    React.useEffect(() => {
+        if (!email) {
+            navigate("/user-login", { state: { from: location }, replace: true });
+            return;
+        }
+        fetch('http://127.0.0.1:8000/Mizanur/get_user_details/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("User details data:", data);
+                // Handle the fetched user details
+                if (data.user_data.phone_number) {
+                    setLoginPhone(data.user_data.phone_number);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+            });
+
+        fetch('http://127.0.0.1:8000/Mizanur/get_user_address/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_email: email }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("User details data:", data);
+                // Handle the fetched user details
+                if (data.phone_number) {
+                    setLoginPhone(data.phone_number);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+            });
+
+        fetch('http://127.0.0.1:8000/Mizanur/get_user_address/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_email: email }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("User address data:", data);
+                // Handle the fetched address data
+                if (data.addresses.length > 0) {
+                    setFetchedUserAddress(data.addresses);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user address:', error);
+            });
+    }, []);
     const handleChange = (e) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
@@ -63,13 +127,13 @@ const BuyProductCard = () => {
             return response.json();
         }).then(data => {
             console.log("Address saved successfully:", data);
-               setShowAlert(true);
-       
-            if(data.message==='Address saved successfully.'){
-                
+            setShowAlert(true);
+
+            if (data.message === 'Address saved successfully.') {
+
                 setShowAlertData(data.message);
             }
-            else if (data.message==='Address already exists.'){
+            else if (data.message === 'Address already exists.') {
                 setShowAlertData(data.message);
             }
 
@@ -78,8 +142,6 @@ const BuyProductCard = () => {
                 console.error('There was a problem with the fetch operation:', error);
             });
     };
-
-
 
     return (
 
@@ -98,15 +160,39 @@ const BuyProductCard = () => {
                     <div className="loginSection_4">
                         <div className="loginHeader_4">
                             <h2>1. LOGIN</h2>
-                            <button className="changeBtn_4">CHANGE</button>
+                            <button className="changeBtn_4" onClick={()=>navigate('/user-login',{ state: { from: location }, replace: true })}>CHANGE</button>
                         </div>
-                        <p className="loginPhone_4">+918399067036</p>
+                        <p className="loginPhone_4">+91{loginPhone}</p>
                     </div>
 
                     {/* Delivery Address */}
                     <div className="addressSection_4">
-                        <h2>2. DELIVERY ADDRESS</h2>
 
+                        <h2>2. DELIVERY ADDRESS</h2>
+                        {FetchedUserAddress.length > 0 && (
+                            <ul>
+                                {FetchedUserAddress.map((address, index) => (
+                                    <ul key={index}>
+                                        <div className="radio_buy_product">
+                                            <div className='selectedAddress'>
+                                              <input type="radio" name='selectedAddress' value={address.id} onChange={()=>{
+                                                setSelectedAddress(address)
+                                                console.log("Selected address is" , address)
+                                              }} />
+
+                                            </div>
+
+                                            <div className='selectedAddress'> {address.name},{address.address_line1},
+                                              {address.address_line2}, {address.address_line2}
+                                              , {address.city},{address.postal_code},{address.phone_number}
+                                            </div>
+                                        </div>
+
+                                    </ul>
+                                ))}
+                            </ul>
+
+                        )}
 
                         <div className="addNewAddress_4" onClick={() => setShowNewAddressForm(!showNewAddressForm)}>+ Add a new address</div>
                         {showNewAddressForm && (<div className="signup-container_4">

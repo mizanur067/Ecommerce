@@ -12,6 +12,7 @@ import ProductDetails from './ProductDetails';
 import UserCart from './UserCart';
 import BuyProduct from './BuyProduct';
 import UserProfile from './UserProfile';
+import UpdateUserPassword from './UpdateUserPassword';
 const FrontPage = () => {
     return (
         <div>
@@ -30,6 +31,7 @@ const FrontPage = () => {
                     <Route path="/user-cart" element={<UserCart />} />
                     <Route path="/buy-product" element={<BuyProduct />} />
                     <Route path="/user-profile" element={<UserProfile />} />
+                    <Route path="/update-user-password" element={<UpdateUserPassword />} />
                     {/* Add more routes as needed */}
 
 

@@ -206,3 +206,14 @@
     width: 100%;
   }
 }
+.radio_buy_product {
+    display: flex;
+    flex-wrap: nowrap;
+   
+    align-items: top;
+    /* gap: 10px; */
+     /* border: 2px solid #007aff; */
+}
+/* .selectedAddress{
+  border: 2px solid #007aff;
+} */

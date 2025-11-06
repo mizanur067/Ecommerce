@@ -1,5 +1,5 @@
 import React, { use, useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, replace } from 'react-router-dom';
 import { useRef } from 'react';
 import '../CSS/UserProfile.css'
 const UserProfileCard = () => {
@@ -231,7 +231,7 @@ const UserProfileCard = () => {
                         <h4>ACCOUNT SETTINGS</h4>
                         <ul>
                             <li className="active_user_profile">Profile Information</li>
-                            <li>Update Password</li>
+                            <li onClick={()=> navigate('/update-user-password', { state: { from: location ,replace: true }})}>Update Password</li>
                             <li>Manage Addresses</li>
                             <li>PAN Card Information</li>
                         </ul>
