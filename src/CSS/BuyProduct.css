@@ -202,9 +202,9 @@
 }
 /* Responsive */
 @media (max-width: 768px) {
-  .rightSection_4 {
+  /* .rightSection_4 {
     width: 100%;
-  }
+  } */
 }
 .radio_buy_product {
     display: flex;
@@ -217,3 +217,13 @@
 /* .selectedAddress{
   border: 2px solid #007aff;
 } */
+.continue_buy_product{
+  /* border: 2px solid red; */
+  font-size: 30px;
+  text-align: center;
+  padding: 7px;
+  margin: 10px;
+  background: orange;
+  border-radius: 8px;
+  cursor: pointer;
+}

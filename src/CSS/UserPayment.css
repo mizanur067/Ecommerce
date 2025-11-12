@@ -1,0 +1,151 @@
+.paymentContainer_UserPayment {
+    width: 100%;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    background: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.paymentHeader_UserPayment {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.paymentGrid_UserPayment {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 20px;
+    align-items: start;
+}
+
+.paymentOptions_UserPayment {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.paymentOption_UserPayment {
+    text-align: left;
+    border: 1px solid #e6e6e6;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: box-shadow .18s ease, transform .12s ease;
+    background: white;
+}
+
+.paymentOption_UserPayment:focus {
+    outline: 2px solid #cfe8ff;
+}
+
+.paymentOption_UserPayment:hover {
+    transform: translateY(-2px);
+}
+
+.active_UserPayment {
+    border-color: #007bff;
+    box-shadow: 0 6px 18px rgba(0, 123, 255, 0.08);
+    background: #f6fbff;
+}
+
+.optionText_UserPayment h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #111;
+}
+
+.optionText_UserPayment p {
+    margin: 4px 0 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.paymentDetails_UserPayment {
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 18px;
+    background: #fafafa;
+}
+
+.detailsTitle_UserPayment {
+    margin: 0 0 6px 0;
+}
+
+.detailsSubtitle_UserPayment {
+    margin: 0 0 12px 0;
+    color: #666;
+}
+
+.cardForm_UserPayment {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fieldLabel_UserPayment {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    color: #333;
+}
+
+.inputField_UserPayment {
+    margin-top: 6px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #d9d9d9;
+    font-size: 14px;
+}
+
+.row_UserPayment {
+    display: flex;
+    gap: 10px;
+}
+
+.small_UserPayment {
+    flex: 1;
+}
+
+.payButton_UserPayment {
+    margin-top: 8px;
+    padding: 10px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.payButton_UserPayment:hover {
+    background: #0056b3;
+}
+
+.upiApps_UserPayment {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.upiOption_UserPayment {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.upiOption_UserPayment input {
+    transform: translateY(1px);
+}
+
+@media (max-width: 880px) {
+    .paymentGrid_UserPayment {
+        grid-template-columns: 1fr;
+    }
+}

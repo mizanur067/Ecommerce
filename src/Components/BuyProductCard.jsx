@@ -4,6 +4,7 @@ import { useState } from 'react';
 import '../CSS/BuyProduct.css'
 import { useRecoilState } from 'recoil';
 import SelectedAddressAtom from '../Recoils/SelectedAddressAtom';
+import DetailsProductAtom from '../Recoils/DetailsProductAtom';
 const BuyProductCard = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,6 +22,8 @@ const BuyProductCard = () => {
     const [FetchedUserAddress, setFetchedUserAddress] = useState([]);
     const [loginPhone, setLoginPhone] = useState('');
     const [selectedAddress, setSelectedAddress] = useRecoilState(SelectedAddressAtom);
+     const [detailsProduct, setDetailsProduct] = useRecoilState(DetailsProductAtom);
+     const [showNotaddressSelected,setshowNotaddressSelected]=useState(false)
 
 
 
@@ -142,7 +145,18 @@ const BuyProductCard = () => {
                 console.error('There was a problem with the fetch operation:', error);
             });
     };
-
+    const HandlePayment=(e)=>{
+        e.preventDefault()
+        if( selectedAddress==="" ){
+            console.log("Address not selected")
+            setshowNotaddressSelected(true);
+        }
+        else if(detailsProduct ===""){
+            navigate('/',{ state: { from: location }, replace: true })
+            return;
+        }
+        else navigate('/user-payment')
+    }
     return (
 
         <>{showAlert && (
@@ -153,6 +167,13 @@ const BuyProductCard = () => {
 
             </div>
         )}
+        {showNotaddressSelected && (
+            <div className=" modal-overlay">
+                <div className="modal">
+                    <span className="alert-text"><strong>Please Select a Address</strong></span>
+                    <button className="alert-close" onClick={() => setshowNotaddressSelected(false)}>✕</button> </div>
+            </div>
+        )}
             <div className="checkoutContainer_4">
                 {/* Left Section */}
                 <div className="leftSection_4">
@@ -160,7 +181,7 @@ const BuyProductCard = () => {
                     <div className="loginSection_4">
                         <div className="loginHeader_4">
                             <h2>1. LOGIN</h2>
-                            <button className="changeBtn_4" onClick={()=>navigate('/user-login',{ state: { from: location }, replace: true })}>CHANGE</button>
+                            <button className="changeBtn_4" onClick={() => navigate('/user-login', { state: { from: location }, replace: true })}>CHANGE</button>
                         </div>
                         <p className="loginPhone_4">+91{loginPhone}</p>
                     </div>
@@ -175,16 +196,16 @@ const BuyProductCard = () => {
                                     <ul key={index}>
                                         <div className="radio_buy_product">
                                             <div className='selectedAddress'>
-                                              <input type="radio" name='selectedAddress' value={address.id} onChange={()=>{
-                                                setSelectedAddress(address)
-                                                console.log("Selected address is" , address)
-                                              }} />
+                                                <input type="radio" name='selectedAddress' value={address.id} onChange={() => {
+                                                    setSelectedAddress(address)
+                                                    console.log("Selected address is", address)
+                                                }} />
 
                                             </div>
 
                                             <div className='selectedAddress'> {address.name},{address.address_line1},
-                                              {address.address_line2}, {address.address_line2}
-                                              , {address.city},{address.postal_code},{address.phone_number}
+                                                {address.address_line2}, {address.address_line2}
+                                                , {address.city},{address.postal_code},{address.phone_number}
                                             </div>
                                         </div>
 
@@ -330,6 +351,10 @@ const BuyProductCard = () => {
                         <span className="link_4">Privacy Policy</span>.
                     </p>
                 </div>
+
+            </div>
+            <div className='continue_buy_product' onClick={HandlePayment}>
+                Continue
             </div>
         </>
     );
